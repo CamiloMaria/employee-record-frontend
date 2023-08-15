@@ -1,0 +1,429 @@
+<body>
+    <div *ngIf="isAdmin">
+    <header class="header">
+        <h1>Admin Dashboard</h1>
+        <nav>
+            <ul class="nav">
+                <li class="nav-item"><a class="nav-link" (click)="showAdmins = true; showEmployees = false; loadAdmins();"
+                        style="cursor: pointer;">Admins</a></li>
+                <li class="nav-item"><a class="nav-link" (click)="showAdmins = false; showEmployees = true"
+                        style="cursor: pointer;">Employees</a>
+                </li>
+            </ul>
+        </nav>
+        <button class="btn btn-primary" (click)="logout()">Logout</button>
+    </header>
+
+    <main class="main">
+        <ng-container *ngIf="showEmployees">
+        <!-- Vista Employees -->
+            <div class="card">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-success mr-2" (click)="openCreateEmployeeModal()"><i class="fas fa-plus"></i>
+                        Add
+                        Employee</button>
+                </div>
+
+                <h3>Employee</h3>
+
+                <div>
+                    <form class="search-form">
+                        <input class="search-input" #txtSearch type="text" placeholder="Search"
+                            (keyup)="onSearchChange(txtSearch.value)">
+                    </form>         
+                    <button class="btn btn-primary" (click)="prevPage()">
+                        Anterior
+                    </button>
+                    &nbsp;
+                    <button class="btn btn-primary" (click)="nextPage()"
+                        [disabled]="(employees | filtroEmployee:page).length === 0">
+                        Siguiente
+                    </button>
+                </div>
+                &nbsp;
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre Completo</th>
+                            <th>Extension</th>
+                            <th>Correo</th>
+                            <th>Departamento</th>
+                            <th>Tiendas</th>
+                            <th colspan="3" class="text-center pe-5">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let item of employees | filtroEmployee:page:search" [ngStyle]="{'width': '260px'}">
+                        <tr>
+                            <td>{{ item.completeName }}</td>
+                            <td>{{ item.extension }}</td>
+                            <td>{{ item.email }}</td>
+                            <td>{{ item.department }}</td>
+                            <td>{{ item.officeCode }}</td>
+                            <td>
+                                <button class="btn btn-warning" (click)="openEditEmployeeModal(item)"><i
+                                        class="fas fa-edit"></i>
+                                    Edit
+                                </button>
+                            </td>
+                            <td></td>
+                            <td>
+                                <button class="btn btn-danger" (click)="deleteEmployee(item._id)"><i
+                                        class="fas fa-trash"></i>
+                                    Delete</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <!-- Formulario Editar -->
+                <div class="modal fade" id="editEmployeeModal" #editEmployeeModal tabindex="-1" role="dialog"
+                aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editEmployeeModalLabel">Editar Usuario</h5>
+                            <button type="button" class="close" (click)="closeEditEmployeeModal()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="editEmployeeName">Nombre</label>
+                                    <input type="text" class="form-control" id="editEmployeeName"
+                                        [(ngModel)]="selectedEmployee.completeName" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editEmployeeExtension">Extension</label>
+                                    <input type="text" class="form-control" id="editEmployeeExtension"
+                                        [(ngModel)]="selectedEmployee.extension" name="extension">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editEmployeeEmail">Correo</label>
+                                    <input type="text" class="form-control" id="editEmployeeEmail"
+                                        [(ngModel)]="selectedEmployee.email" name="email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editEmployeeDepartment">Departamento</label>
+                                    <input type="text" class="form-control" id="editEmployeeDepartment"
+                                        [(ngModel)]="selectedEmployee.department" name="department">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editEmployeeOfficeCode">Tienda</label>
+                                    <select class="form-control" id="editEmployeeOfficeCode" [(ngModel)]="selectedEmployee.officeCode" name="officeCode">
+                                        <option *ngFor="let office of offices" [value]="office.pl">{{ office.pl }}</option>
+                                    </select>
+                                </div>  
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" (click)="updateEmployee()">Guardar</button>
+                            <button type="button" class="btn btn-secondary"
+                                (click)="closeEditEmployeeModal()">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!-- Formulario Crear -->
+                <div class="modal fade" id="createEmployeeModal" #createEmployeeModal tabindex="-1" role="dialog"
+                    aria-labelledby="createEmployeeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="createEmployeeModalLabel">Add Employee</h5>
+                                <button type="button" class="close" (click)="closeCreateEmployeeModal()" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="createEmployeeName">Nombre</label>
+                                        <input type="text" class="form-control" id="createEmployeeName"
+                                            [(ngModel)]="selectedEmployee.completeName" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="createEmployeeEmail">Correo</label>
+                                        <input type="text" class="form-control" id="createEmployeeEmail"
+                                            [(ngModel)]="selectedEmployee.email" name="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="createEmployeeExtension">Extension</label>
+                                        <input type="text" class="form-control" id="createEmployeeExtension"
+                                            [(ngModel)]="selectedEmployee.extension" name="extension">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="createEmployeeDepartment">Departamento</label>
+                                        <input type="text" class="form-control" id="createEmployeeDepartment"
+                                            [(ngModel)]="selectedEmployee.department" name="department">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="createEmployeeOfficeCode">Tienda</label>
+                                        <select class="form-control" id="createEmployeeOfficeCode" [(ngModel)]="selectedEmployee.officeCode" name="officeCode">
+                                            <option *ngFor="let office of offices" [value]="office.pl">{{ office.pl }}</option>
+                                        </select>
+                                    </div>    
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" (click)="createEmployee()">Guardar</button>
+                                <button type="button" class="btn btn-secondary"
+                                    (click)="closeCreateEmployeeModal()">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container  *ngIf="showAdmins">
+        <!-- Vista Admin -->
+            <div class="card">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-success mr-2" (click)="openCreateAdminModal()"><i class="fas fa-plus"></i> 
+                        Create Admin</button>
+                </div>
+
+                <h3>Admins</h3>
+
+                <div>
+                    <form class="search-form">
+                        <input class="search-input" #txtSearch type="text" placeholder="Search"
+                            (keyup)="onSearchChange(txtSearch.value)">
+                    </form>         
+                    <button class="btn btn-primary" (click)="prevPage()">
+                        Anterior
+                    </button>
+                    &nbsp;
+                    <button class="btn btn-primary" (click)="nextPage()"
+                        [disabled]="(admins | filtroAdmin:page).length === 0">
+                        Siguiente
+                    </button>
+                </div>
+                &nbsp;
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Paswword</th>
+                            <th>Rol</th>
+                            <th>Fecha Creacion</th>
+                            <th colspan="3" class="text-center pe-5">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let item of admins | filtroAdmin:page:search" [ngStyle]="{'width': '260px'}">
+                        <tr>
+                            <td>{{ item.username }}</td>
+                            <td>{{ item.password }}</td>
+                            <td>{{ item.role }}</td>
+                            <td>{{ item.created_at }}</td>
+                            <td>
+                                <button class="btn btn-warning" (click)="openEditAdminModal(item)"><i
+                                    class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            </td>
+                            <td></td>
+                            <td>
+                                <button class="btn btn-danger" (click)="deleteAdmin(item._id)"><i
+                                        class="fas fa-trash"></i>
+                                    Delete</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table> 
+                <!-- Formulario Editar -->
+                <div class="modal fade" id="editAdminModal" #editAdminModal tabindex="-1" role="dialog"
+                    aria-labelledby="editAdminModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editAdminModalLabel">Editar Admin</h5>
+                                <button type="button" class="close" (click)="closeEditAdminModal()" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="editAdminUsername">Username</label>
+                                        <input type="text" class="form-control" id="editAdminusername"
+                                            [(ngModel)]="selectedAdmin.username" name="username">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAdminLastName">Contraseña</label>
+                                        <input type="text" class="form-control" id="editAdminLastName"
+                                            [(ngModel)]="selectedAdmin.password" name="password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAdminRole">Rol</label>
+                                        <select class="form-control" id="editAdminRole" [(ngModel)]="selectedAdmin.role"
+                                            name="role">
+                                            <option *ngFor="let option of roleOptions" [value]="option">{{ option }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" (click)="updateAdmin()">Guardar</button>
+                                <button type="button" class="btn btn-secondary"
+                                    (click)="closeEditAdminModal()">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Formulario Crear -->
+                <div class="modal fade" id="createAdminModal" #createAdminModal tabindex="-1" role="dialog"
+                    aria-labelledby="createAdminModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="createAdminModalLabel">Añadir Admin</h5>
+                                <button type="button" class="close" (click)="closeCreateAdminModal()" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="createAdminUsername">Username</label>
+                                        <input type="text" class="form-control" id="createAdminUsername"
+                                            [(ngModel)]="selectedAdmin.username" name="username">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="createAdminPassword">Contraseña</label>
+                                        <input type="text" class="form-control" id="createAdminPassword"
+                                            [(ngModel)]="selectedAdmin.password" name="password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="createAdminRole">Rol</label>
+                                        <select class="form-control" id="createAdminRole" [(ngModel)]="selectedAdmin.role"
+                                            name="role">
+                                            <option *ngFor="let option of roleOptions" [value]="option">{{ option }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" (click)="createAdmin()">Guardar</button>
+                                <button type="button" class="btn btn-secondary"
+                                    (click)="closeCreateAdminModal()">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </ng-container >
+    </main>
+    </div>
+    <div *ngIf="isSubAdmin">
+        <header class="header">
+            <h1>SubAdmin Dashboard</h1>
+            <button class="btn btn-primary" (click)="logout()">Logout</button>
+        </header>
+        <main class="main">
+            <ng-container *ngIf="showEmployees">
+            <!-- Vista Employees -->
+                <div class="card">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-success mr-2" (click)="openCreateEmployeeModal()"><i class="fas fa-plus"></i>
+                            Add
+                            Employee</button>
+                    </div>
+    
+                    <h3>Employee</h3>
+    
+                    <div>
+                        <form class="search-form">
+                            <input class="search-input" #txtSearch type="text" placeholder="Search"
+                                (keyup)="onSearchChange(txtSearch.value)">
+                        </form>         
+                        <button class="btn btn-primary" (click)="prevPage()">
+                            Anterior
+                        </button>
+                        &nbsp;
+                        <button class="btn btn-primary" (click)="nextPage()"
+                            [disabled]="(employees | filtroEmployee:page).length === 0">
+                            Siguiente
+                        </button>
+                    </div>
+                    &nbsp;
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre Completo</th>
+                                <th>Extension</th>
+                                <th>Correo</th>
+                                <th>Departamento</th>
+                                <th>Tiendas</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let item of employees | filtroEmployee:page:search" [ngStyle]="{'width': '260px'}">
+                            <tr>
+                                <td>{{ item.completeName }}</td>
+                                <td>{{ item.extension }}</td>
+                                <td>{{ item.email }}</td>
+                                <td>{{ item.department }}</td>
+                                <td>{{ item.officeCode }}</td>
+                            </tr>
+    
+                        </tbody>
+                    </table>
+                    <!-- Formulario Crear -->
+                    <div class="modal fade" id="createEmployeeModal" #createEmployeeModal tabindex="-1" role="dialog"
+                        aria-labelledby="createEmployeeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="createEmployeeModalLabel">Add Employee</h5>
+                                    <button type="button" class="close" (click)="closeCreateEmployeeModal()" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="createEmployeeName">Nombre</label>
+                                            <input type="text" class="form-control" id="createEmployeeName"
+                                                [(ngModel)]="selectedEmployee.completeName" name="name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="createEmployeeEmail">Correo</label>
+                                            <input type="text" class="form-control" id="createEmployeeEmail"
+                                                [(ngModel)]="selectedEmployee.email" name="email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="createEmployeeExtension">Extension</label>
+                                            <input type="text" class="form-control" id="createEmployeeExtension"
+                                                [(ngModel)]="selectedEmployee.extension" name="extension">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="createEmployeeDepartment">Departamento</label>
+                                            <input type="text" class="form-control" id="createEmployeeDepartment"
+                                                [(ngModel)]="selectedEmployee.department" name="department">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="createEmployeeOfficeCode">Tienda</label>
+                                            <select class="form-control" id="createEmployeeOfficeCode" [(ngModel)]="selectedEmployee.officeCode" name="officeCode">
+                                                <option *ngFor="let office of offices" [value]="office.pl">{{ office.pl }}</option>
+                                            </select>
+                                        </div>    
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" (click)="createEmployee()">Guardar</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        (click)="closeCreateEmployeeModal()">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </main>
+        </div>
+</body>

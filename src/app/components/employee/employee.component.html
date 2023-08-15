@@ -1,0 +1,46 @@
+<body>
+
+    <header class="header">
+        <h1>Employees Dashboard</h1>
+    </header>
+    <main class="main">
+        <div class="card">
+            <div>
+                <form class="search-form">
+                    <input class="search-input" #txtSearch type="text" placeholder="Search"
+                        (keyup)="onSearchChange(txtSearch.value)">
+                </form>         
+                <button class="btn btn-primary" (click)="prevPage()">
+                    Anterior
+                </button>
+                &nbsp;
+                <button class="btn btn-primary" (click)="nextPage()"
+                    [disabled]="(employee | filtroEmployee:page).length === 0">
+                    Siguiente
+                </button>
+            </div>
+            &nbsp;
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre Completo</th>
+                        <th>Extension</th>
+                        <th>Correo</th>
+                        <th>Departamento</th>
+                        <th>Tienda</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of employee | filtroEmployee:page:search" [ngStyle]="{'width': '260px'}">
+                    <tr>
+                        <td>{{ item.completeName }}</td>
+                        <td>{{ item.extension }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.department }}</td>
+                        <td>{{ item.officeCode }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
