@@ -115,11 +115,10 @@ export class AdminComponent implements OnInit {
   getAdminRole() {
     const token = localStorage.getItem('token');
     const adminRole = this.getAdminRoleService.getAdminRole(token);
-    console.log(adminRole)
-    if (adminRole === this.roleOptions[0]) {
+    if (adminRole === 'admin') {
       this.isAdmin = true;
       this.isSubAdmin = false;
-    } else if (adminRole === this.roleOptions[1]) {
+    } else if (adminRole === 'subAdmin') {
       this.isAdmin = false;
       this.isSubAdmin = true;
     } else {
@@ -130,26 +129,24 @@ export class AdminComponent implements OnInit {
 
   //Offices---
   loadOffices() {
-    this.officeService
-      .getOffices()
-      .pipe(
-        map((data: OfficeResponse) => {
-          return data.map((item: Office) => {
-            return {
-              _id: item._id,
-              pl: item.pl,
-              name: item.name,
-              status: item.status,
-            };
-          });
-        })
-      )
-      .subscribe({
-        next: (offices: Office[]) => {
-          this.offices = offices;
-        },
-      });
+    this.officeService.getOffices().subscribe({
+      next: (response: any) => {
+        const offices = response.rows.map((item: Office) => {
+          return {
+            id: item.id,
+            pl: item.pl,
+            nombre: item.nombre,
+            estatus: item.estatus,
+          };
+        });
+        this.offices = offices;
+      },
+      error: (error: any) => {
+        console.log(error);
+      }
+    });
   }
+  
 
   //Employees---
   loadEmployees() {
