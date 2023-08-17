@@ -89,7 +89,7 @@
                         <div class="modal-body">
                             <form>
                                 <div class="form-group">
-                                    <label for="editEmployeeName">Nombre</label>
+                                    <label for="editEmployeeName">Nombre Completo</label>
                                     <input type="text" class="form-control" id="editEmployeeName"
                                         [(ngModel)]="selectedEmployee.completeName" name="name">
                                 </div>
@@ -111,7 +111,7 @@
                                 <div class="form-group">
                                     <label for="editEmployeeOfficeCode">Tienda</label>
                                     <select class="form-control" id="editEmployeeOfficeCode" [(ngModel)]="selectedEmployee.officeCode" name="officeCode">
-                                        <option *ngFor="let office of offices" [value]="office.pl">{{ office.pl }}</option>
+                                        <option *ngFor="let office of offices" [value]="office.pl">{{ office.pl }} - {{ office.nombre }}</option>
                                     </select>
                                 </div>  
                             </form>
@@ -138,7 +138,7 @@
                             <div class="modal-body">
                                 <form>
                                     <div class="form-group">
-                                        <label for="createEmployeeName">Nombre</label>
+                                        <label for="createEmployeeName">Nombre Completo</label>
                                         <input type="text" class="form-control" id="createEmployeeName"
                                             [(ngModel)]="selectedEmployee.completeName" name="name">
                                     </div>
@@ -160,9 +160,9 @@
                                     <div class="form-group">
                                         <label for="createEmployeeOfficeCode">Tienda</label>
                                         <select class="form-control" id="createEmployeeOfficeCode" [(ngModel)]="selectedEmployee.officeCode" name="officeCode">
-                                            <option *ngFor="let office of offices" [value]="office.pl">{{ office.pl }}</option>
+                                            <option *ngFor="let office of offices" [value]="office.pl">{{ office.pl }} - {{ office.nombre }}</option>
                                         </select>
-                                    </div>    
+                                    </div>   
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -387,7 +387,7 @@
                                 <div class="modal-body">
                                     <form>
                                         <div class="form-group">
-                                            <label for="createEmployeeName">Nombre</label>
+                                            <label for="createEmployeeName">Nombre Completo</label>
                                             <input type="text" class="form-control" id="createEmployeeName"
                                                 [(ngModel)]="selectedEmployee.completeName" name="name">
                                         </div>
@@ -409,7 +409,7 @@
                                         <div class="form-group">
                                             <label for="createEmployeeOfficeCode">Tienda</label>
                                             <select class="form-control" id="createEmployeeOfficeCode" [(ngModel)]="selectedEmployee.officeCode" name="officeCode">
-                                                <option *ngFor="let office of offices" [value]="office.pl">{{ office.pl }}</option>
+                                                <option *ngFor="let office of offices" [value]="office.pl">{{ office.pl }} - {{ office.nombre }}</option>
                                             </select>
                                         </div>    
                                     </form>
