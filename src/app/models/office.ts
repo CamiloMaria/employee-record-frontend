@@ -1,11 +1,10 @@
 export interface Office {
-    _id: string;
+    id: string;
     pl: string;
-    name: string;
-    status: string;
-}
+    nombre: string;
+    estatus: string;
+  }
 
 export interface OfficeResponse {
-    map(arg0: (items: any) => any): any; 
     value: Office[];
 }
