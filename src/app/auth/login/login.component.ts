@@ -43,7 +43,6 @@ export class LoginComponent implements OnInit {
     }
 
     const { username, password } = this.loginForm.value as LoginFormValue;
-
     this.loading = true;
     this.loginService.login(username, password).pipe(
       catchError((errorConsole) => this.errorHandler(errorConsole)),
