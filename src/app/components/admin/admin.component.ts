@@ -49,7 +49,6 @@ export class AdminComponent implements OnInit {
   isAdmin: boolean = false;
   isSubAdmin: boolean = false;
 
-  oldPassword: string = '';
   newPassword: string = '';
   confirmNewPassword: string = '';
 
@@ -375,41 +374,24 @@ export class AdminComponent implements OnInit {
       'none'
     );
 
-    this.oldPassword = '';
     this.newPassword = '';
     this.confirmNewPassword = '';
   }
 
   changePassword() {
-    // if (this.selectedAdmin.password !== this.oldPassword)
-    // if (this.newPassword !== this.confirmNewPassword) {
-    //   console.log("No coinciden")
-    //   return;
-    // } else {
-    //   this.selectedAdmin.password = this.confirmNewPassword
-    //   this.closeChangePasswordModal();
-    // }
-
     if (
       !this.selectedAdmin.password ||
-      !this.oldPassword ||
       !this.newPassword ||
       !this.confirmNewPassword
     ) {
-      // Manejar el caso de campos faltantes si es necesario
+      // Si alguno de los campos está vacío, mostrar un mensaje de error
+      alert('Por favor, complete todos los campos.');
       return;
     }
-
-    // Verificar que la contraseña actual coincide
-    if (!bcrypt.compareSync(this.oldPassword, this.selectedAdmin.password)) {
-      console.log('La contraseña actual no coincide');
-      return;
-    }
-
 
     // Verificar que las nuevas contraseñas coinciden
     if (this.newPassword !== this.confirmNewPassword) {
-      console.log('Las nuevas contraseñas no coinciden');
+      alert('Las nuevas contraseñas no coinciden');
       return;
     }
 
