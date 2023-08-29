@@ -13,6 +13,7 @@ import { EmployeeService } from 'src/app/services/employee.service';
 import { Office } from 'src/app/models/office';
 import { OfficeService } from 'src/app/services/office.service';
 import { GetAdminRoleService } from 'src/app/services/getAdminRole.service';
+import * as bcrypt from 'bcryptjs';
 
 @Component({
   selector: 'app-admin',
@@ -24,6 +25,7 @@ export class AdminComponent implements OnInit {
   @ViewChild('editEmployeeModal') editEmployeeModalRef!: ElementRef;
   @ViewChild('createAdminModal') createAdminModalRef!: ElementRef;
   @ViewChild('editAdminModal') editAdminModalRef!: ElementRef;
+  @ViewChild('changePasswordModal') changePasswordModalRef!: ElementRef;
 
   offices: Office[] = [];
 
@@ -47,6 +49,10 @@ export class AdminComponent implements OnInit {
   isAdmin: boolean = false;
   isSubAdmin: boolean = false;
 
+  oldPassword: string = '';
+  newPassword: string = '';
+  confirmNewPassword: string = '';
+
   constructor(
     private getAdminRoleService: GetAdminRoleService,
     private adminService: AdminService,
@@ -54,9 +60,7 @@ export class AdminComponent implements OnInit {
     private officeService: OfficeService,
     // private formBuilder: FormBuilder,
     private renderer: Renderer2
-  ) 
-  
-  {
+  ) {
     this.selectedEmployeeEmpty = {
       _id: '',
       completeName: '',
@@ -190,6 +194,8 @@ export class AdminComponent implements OnInit {
         this.closeCreateEmployeeModal();
       },
     });
+
+    window.location.reload();
   }
 
   updateEmployee() {
@@ -346,6 +352,70 @@ export class AdminComponent implements OnInit {
       'display',
       'none'
     );
+  }
+
+  openChangePasswordModal() {
+    this.renderer.removeClass(
+      this.changePasswordModalRef.nativeElement,
+      'close'
+    );
+    this.renderer.addClass(this.changePasswordModalRef.nativeElement, 'show');
+    this.renderer.setStyle(
+      this.changePasswordModalRef.nativeElement,
+      'display',
+      'block'
+    );
+  }
+
+  closeChangePasswordModal() {
+    this.renderer.addClass(this.changePasswordModalRef.nativeElement, 'close');
+    this.renderer.setStyle(
+      this.changePasswordModalRef.nativeElement,
+      'display',
+      'none'
+    );
+
+    this.oldPassword = '';
+    this.newPassword = '';
+    this.confirmNewPassword = '';
+  }
+
+  changePassword() {
+    // if (this.selectedAdmin.password !== this.oldPassword)
+    // if (this.newPassword !== this.confirmNewPassword) {
+    //   console.log("No coinciden")
+    //   return;
+    // } else {
+    //   this.selectedAdmin.password = this.confirmNewPassword
+    //   this.closeChangePasswordModal();
+    // }
+
+    if (
+      !this.selectedAdmin.password ||
+      !this.oldPassword ||
+      !this.newPassword ||
+      !this.confirmNewPassword
+    ) {
+      // Manejar el caso de campos faltantes si es necesario
+      return;
+    }
+
+    // Verificar que la contraseña actual coincide
+    if (!bcrypt.compareSync(this.oldPassword, this.selectedAdmin.password)) {
+      console.log('La contraseña actual no coincide');
+      return;
+    }
+
+
+    // Verificar que las nuevas contraseñas coinciden
+    if (this.newPassword !== this.confirmNewPassword) {
+      console.log('Las nuevas contraseñas no coinciden');
+      return;
+    }
+
+    // Actualizar la contraseña hasheada en selectedAdmin
+    this.selectedAdmin.password = this.newPassword;
+    this.closeChangePasswordModal();
   }
 
   onSearchChange(searchValue: string) {

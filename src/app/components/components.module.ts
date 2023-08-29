@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
+
 @NgModule({
   declarations: [EmployeeComponent, AdminComponent, FiltroPipeEmployee, FiltroPipeAdmin],
   imports: [
