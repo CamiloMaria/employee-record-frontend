@@ -1,7 +1,7 @@
 export interface Employee {
     _id: string;
     completeName: string;
-    extension: string;
+    extension: number;
     email: string;
     department: string;
     officeCode: string;

@@ -13,7 +13,7 @@ export class FiltroPipeEmployee implements PipeTransform {
     const filteredEmployees = employees.filter((employee) => {
       return (
         employee.completeName.toLowerCase().includes(search.toLowerCase()) ||
-        employee.extension.includes(search) ||
+        employee.extension.toString().includes(search) ||
         employee.email.toLowerCase().includes(search.toLowerCase()) ||
         employee.department.toLowerCase().includes(search.toLowerCase()) ||
         employee.officeCode.toLowerCase().includes(search.toLowerCase())
