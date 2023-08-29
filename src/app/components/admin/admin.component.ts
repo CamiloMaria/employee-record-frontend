@@ -10,11 +10,9 @@ import { Admin, AdminResponse } from 'src/app/models/admin';
 import { Employee, EmployeeResponse } from 'src/app/models/employee';
 import { AdminService } from 'src/app/services/admin.service';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Office, OfficeResponse } from 'src/app/models/office';
+import { Office } from 'src/app/models/office';
 import { OfficeService } from 'src/app/services/office.service';
 import { GetAdminRoleService } from 'src/app/services/getAdminRole.service';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -31,7 +29,7 @@ export class AdminComponent implements OnInit {
 
   selectedEmployee: Employee;
   selectedEmployeeEmpty: Employee;
-  employeeForm: FormGroup;
+  //employeeForm: FormGroup;
 
   employees: Employee[] = [];
   search: string = '';
@@ -43,7 +41,7 @@ export class AdminComponent implements OnInit {
   admins: Admin[] = [];
   selectedAdmin: Admin;
   selectedAdminEmpty: Admin;
-  adminForm: FormGroup;
+  //adminForm: FormGroup;
   roleOptions: string[] = ['admin', 'subAdmin'];
 
   isAdmin: boolean = false;
@@ -54,14 +52,16 @@ export class AdminComponent implements OnInit {
     private adminService: AdminService,
     private employeeService: EmployeeService,
     private officeService: OfficeService,
-    private formBuilder: FormBuilder,
+    // private formBuilder: FormBuilder,
     private renderer: Renderer2
-  ) {
+  ) 
+  
+  {
     this.selectedEmployeeEmpty = {
       _id: '',
       completeName: '',
       email: '',
-      extension: '',
+      extension: 0,
       department: '',
       officeCode: '',
     };
@@ -70,7 +70,7 @@ export class AdminComponent implements OnInit {
       _id: '',
       completeName: '',
       email: '',
-      extension: '',
+      extension: 0,
       department: '',
       officeCode: '',
     };
@@ -91,20 +91,20 @@ export class AdminComponent implements OnInit {
       created_at: new Date(),
     };
 
-    this.employeeForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', Validators.required],
-      extension: ['', Validators.required],
-      department: ['', Validators.required],
-      officeCode: ['', Validators.required],
-    });
+    // this.employeeForm = this.formBuilder.group({
+    //   name: ['', Validators.required],
+    //   lastName: ['', Validators.required],
+    //   email: ['', Validators.required],
+    //   extension: ['', Validators.required],
+    //   department: ['', Validators.required],
+    //   officeCode: ['', Validators.required],
+    // });
 
-    this.adminForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      role: ['', Validators.required],
-    });
+    // this.adminForm = this.formBuilder.group({
+    //   username: ['', Validators.required],
+    //   password: ['', Validators.required],
+    //   role: ['', Validators.required],
+    // });
   }
   ngOnInit(): void {
     this.getAdminRole();
@@ -143,10 +143,9 @@ export class AdminComponent implements OnInit {
       },
       error: (error: any) => {
         console.log(error);
-      }
+      },
     });
   }
-  
 
   //Employees---
   loadEmployees() {
@@ -171,31 +170,26 @@ export class AdminComponent implements OnInit {
           this.employees = employees;
         },
       });
+    this.loadOffices();
   }
 
   createEmployee() {
-    if (this.employeeForm.valid) {
-      const formData = this.employeeForm.value;
-      const selectedOffice = this.offices.find(
-        (office) => office.pl === formData.officeCode
-      );
+    const selectedOffice = this.offices.find(
+      (office) => office.pl === this.selectedEmployee.officeCode
+    );
 
-      if (selectedOffice) {
-        this.selectedEmployee.officeCode = {
-          ...formData,
-          officeCode: selectedOffice.pl,
-        };
-
-        this.employeeService.createEmployee(this.selectedEmployee).subscribe({
-          next: () => {
-            this.loadEmployees();
-            this.closeCreateEmployeeModal();
-          },
-        });
-      } else {
-        console.log('No se encontro la oficina');
-      }
+    if (selectedOffice) {
+      this.selectedEmployee.officeCode = selectedOffice.pl;
+    } else {
+      console.log('No se encontro la oficina');
     }
+
+    this.employeeService.createEmployee(this.selectedEmployee).subscribe({
+      next: () => {
+        this.loadEmployees();
+        this.closeCreateEmployeeModal();
+      },
+    });
   }
 
   updateEmployee() {
