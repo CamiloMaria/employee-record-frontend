@@ -43,6 +43,11 @@ body {
   cursor: pointer;
 }
 
+#logoutBtn:hover {
+  background-color: #4b1016;
+  border-color: #c91022;
+}
+
 .navegation {
   background-color: #009ce7;
   margin-bottom: 20px;
@@ -110,30 +115,22 @@ body {
   border-color: #3399cc;
 }
 
-.btn-info {
-  background-color: #17a2b8;
-  border-color: #17a2b8;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  border-color: #dc3545;
-}
-
 .btn-success {
   background-color: #28a745;
   border-color: #28a745;
 }
 
-.btn-primary,
-.btn-info,
-.btn-danger,
-.btn-success {
-  color: #ffffff;
+.actionBtn {
+  column-gap: 30px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .btn-primary:hover,
-.btn-info:hover,
+.btn-warning:hover,
 .btn-danger:hover,
 .btn-success:hover {
   background-color: #0069d9;
@@ -141,8 +138,8 @@ body {
 }
 
 .btn-primary:focus,
-.btn-info:focus,
 .btn-danger:focus,
+.btn-warning:focus,
 .btn-success:focus {
   box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
 }

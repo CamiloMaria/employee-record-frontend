@@ -20,8 +20,7 @@
                 <ul class="nav">
                     <li class="nav-item" [ngClass]="{
                         'active' : showAdmins === true,
-                    }"><a class="nav-link"
-                            (click)="showAdmins = true; showEmployees = false; loadAdmins();"
+                    }"><a class="nav-link" (click)="showAdmins = true; showEmployees = false; loadAdmins();"
                             style="cursor: pointer;">Admins</a></li>
                     <li class="nav-item" [ngClass]="{
                         'active' : showEmployees === true,
@@ -49,8 +48,7 @@
                             <input class="search-input" #txtSearch type="text" placeholder="Search"
                                 (keyup)="onSearchChange(txtSearch.value)">
                         </form>
-                        <button class="btn btn-primary" (click)="prevPage()"
-                        [disabled]="page === 0">
+                        <button class="btn btn-primary" (click)="prevPage()" [disabled]="page === 0">
                             Anterior
                         </button>
                         &nbsp;
@@ -79,14 +77,11 @@
                                 <td>{{ item.email }}</td>
                                 <td>{{ item.department }}</td>
                                 <td>{{ item.officeCode }}</td>
-                                <td>
+                                <td class="actionBtn">
                                     <button class="btn btn-warning" (click)="openEditEmployeeModal(item)"><i
                                             class="fas fa-edit"></i>
                                         Edit
                                     </button>
-                                </td>
-                                <td></td>
-                                <td>
                                     <button class="btn btn-danger" (click)="deleteEmployee(item._id)"><i
                                             class="fas fa-trash"></i>
                                         Delete</button>
@@ -220,8 +215,7 @@
                             <input class="search-input" #txtSearch type="text" placeholder="Search"
                                 (keyup)="onSearchChange(txtSearch.value)">
                         </form>
-                        <button class="btn btn-primary" (click)="prevPage()"
-                        [disabled]="page === 0">
+                        <button class="btn btn-primary" (click)="prevPage()" [disabled]="page === 0">
                             Anterior
                         </button>
                         &nbsp;
@@ -245,20 +239,16 @@
                                 <td>{{ item.username }}</td>
                                 <td>{{ item.role }}</td>
                                 <td>{{ item.created_at }}</td>
-                                <td>
+                                <td class="actionBtn">
                                     <button class="btn btn-warning" (click)="openEditAdminModal(item)"><i
                                             class="fas fa-edit"></i>
                                         Edit
                                     </button>
-                                </td>
-                                <td></td>
-                                <td>
                                     <button class="btn btn-danger" (click)="deleteAdmin(item._id)"><i
                                             class="fas fa-trash"></i>
                                         Delete</button>
                                 </td>
                             </tr>
-
                         </tbody>
                     </table>
                     <!-- Formulario Editar -->
@@ -280,11 +270,6 @@
                                             <input type="text" class="form-control" id="editAdminusername"
                                                 [(ngModel)]="selectedAdmin.username" name="username">
                                         </div>
-                                        <!-- <div class="form-group">
-                                            <label for="editAdminLastName">Contraseña</label>
-                                            <input type="text" class="form-control" id="editAdminLastName"
-                                                [(ngModel)]="selectedAdmin.password" name="password">
-                                        </div> -->
                                         <div class="form-group">
                                             <label for="editAdminRole">Rol</label>
                                             <select class="form-control" id="editAdminRole"
@@ -296,10 +281,45 @@
                                     </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary"
+                                    <button type="button" class="btn btn-success"
                                         (click)="updateAdmin()">Guardar</button>
                                     <button type="button" class="btn btn-secondary"
                                         (click)="closeEditAdminModal()">Cerrar</button>
+                                    <button type="button" class="btn btn-warning"
+                                        (click)="openChangePasswordModal()">Cambiar Contraseña</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal Cambiar Contraseña -->
+                    <div class="modal fade" id="changePasswordModal" #changePasswordModal tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="changePasswordModalLabel">Cambiar Contraseña</h5>
+                                    <button type="button" class="close" (click)="closeChangePasswordModal()" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="oldPassword">Contraseña Antigua</label>
+                                            <input type="password" class="form-control" id="oldPassword" [(ngModel)]="oldPassword" name="oldPassword">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newPassword">Nueva Contraseña</label>
+                                            <input type="password" class="form-control" id="newPassword" [(ngModel)]="newPassword" name="newPassword">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="confirmNewPassword">Confirmar Nueva Contraseña</label>
+                                            <input type="password" class="form-control" id="confirmNewPassword" [(ngModel)]="confirmNewPassword" name="confirmNewPassword">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" (click)="changePassword()">Cambiar Contraseña</button>
+                                    <button type="button" class="btn btn-secondary" (click)="closeChangePasswordModal()">Cerrar</button>
                                 </div>
                             </div>
                         </div>
@@ -354,17 +374,27 @@
     </div>
     <div *ngIf="isSubAdmin">
         <header class="header">
-            <h1>SubAdmin Dashboard</h1>
-            <button class="btn btn-primary" (click)="logout()"><i class="fa fa-sign-out"></i>
-                Logout</button>
+            <div class="header__left">
+                <a href="/admin" class="header__logo-link">
+                    <span class="visually-hidden">Plaza Lama</span>
+                    <img class="header__logo-image"
+                        src="//plazalama.com.do/cdn/shop/files/BEA0A401-AA43-4843-B8ED-3389709E6C2F_220x@2x.png?v=1670945151"
+                        alt="Plaza Lama">
+                </a>
+                <h1 class="header__title">SubAdmin Dashboard</h1>
+            </div>
+            <button id="logoutBtn" class="btn btn-danger" (click)="logout()">
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+            </button>
         </header>
         <main class="main">
             <ng-container *ngIf="showEmployees">
                 <!-- Vista Employees -->
                 <div class="card">
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-success mr-2" (click)="openCreateEmployeeModal()"><i
-                                class="fas fa-plus"></i>
+                        <button class="btn btn-success mr-2" (click)="openCreateEmployeeModal()">
+                            <i class="fa fa-plus"></i>
                             Add
                             Employee</button>
                     </div>
@@ -376,8 +406,7 @@
                             <input class="search-input" #txtSearch type="text" placeholder="Search"
                                 (keyup)="onSearchChange(txtSearch.value)">
                         </form>
-                        <button class="btn btn-primary" (click)="prevPage()"
-                        [disabled]="page === 0">
+                        <button class="btn btn-primary" (click)="prevPage()" [disabled]="page === 0">
                             Anterior
                         </button>
                         &nbsp;
@@ -395,6 +424,7 @@
                                 <th>Correo</th>
                                 <th>Departamento</th>
                                 <th>Tiendas</th>
+                                <th colspan="3" class="text-center pe-5">Acciones</th>
                             </tr>
                         </thead>
                         <tbody *ngFor="let item of employees | filtroEmployee:page:search"
@@ -405,19 +435,17 @@
                                 <td>{{ item.email }}</td>
                                 <td>{{ item.department }}</td>
                                 <td>{{ item.officeCode }}</td>
+                                <td class="actionBtn">
+                                    <button class="btn btn-warning" (click)="openEditEmployeeModal(item)"><i
+                                            class="fas fa-edit"></i>
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-danger" (click)="deleteEmployee(item._id)"><i
+                                            class="fas fa-trash"></i>
+                                        Delete</button>
+                                </td>
                             </tr>
-                            <td>
-                                <button class="btn btn-warning" (click)="openEditEmployeeModal(item)"><i
-                                        class="fas fa-edit"></i>
-                                    Edit
-                                </button>
-                            </td>
-                            <td></td>
-                            <td>
-                                <button class="btn btn-danger" (click)="deleteEmployee(item._id)"><i
-                                        class="fas fa-trash"></i>
-                                    Delete</button>
-                            </td>
+
                         </tbody>
                     </table>
                     <!-- Formulario Editar -->
@@ -528,6 +556,7 @@
                     </div>
                 </div>
             </ng-container>
+
         </main>
     </div>
 </body>
