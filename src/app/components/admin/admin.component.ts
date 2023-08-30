@@ -207,11 +207,13 @@ export class AdminComponent implements OnInit {
   }
 
   deleteEmployee(id: string) {
-    this.employeeService.deleteEmployee(id).subscribe({
-      next: () => {
-        this.loadEmployees();
-      },
-    });
+    if (confirm('Are you sure you want to delete this employee?')) {
+      this.employeeService.deleteEmployee(id).subscribe({
+        next: () => {
+          this.loadEmployees();
+        },
+      });
+    }
   }
   //---!
 
@@ -258,11 +260,13 @@ export class AdminComponent implements OnInit {
   }
 
   deleteAdmin(id: string) {
-    this.adminService.deleteAdmin(id).subscribe({
-      next: () => {
-        this.loadAdmins();
-      },
-    });
+    if (confirm('Are you sure you want to delete this admin?')) {
+      this.adminService.deleteAdmin(id).subscribe({
+        next: () => {
+          this.loadAdmins();
+        },
+      });
+    }
   }
   //---!
 
