@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   showError: string = '';
   loading = false;
+  showPassword = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,6 +36,17 @@ export class LoginComponent implements OnInit {
       username: ['', [Validators.required]],
       password: ['', Validators.required]
     });
+  }
+
+  onInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.trim();
+    
+    if(value) {
+      input.classList.add('has-val');
+    } else {
+      input.classList.remove('has-val');
+    }
   }
 
   onSubmit(): void {
@@ -52,7 +64,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('token', response.token);
         this.router.navigate(['/admin']);
       }
-    });
+    }); 
   }
 
   private errorHandler(errorConsole: HttpErrorResponse) {
