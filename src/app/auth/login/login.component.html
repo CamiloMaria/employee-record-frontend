@@ -39,7 +39,6 @@
                         <div class="login100-form-bgbtn"></div>
                         <button class="login100-form-btn"
                             [disabled]="loading || loginForm.invalid || !loginForm.get('username')?.value || !loginForm.get('password')?.value"
-                            [ngClass]="{'disabled-btn': loading || loginForm.invalid || !loginForm.get('username')?.value || !loginForm.get('password')?.value}"
                             (click)="onSubmit()">
                             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-2" role="status"
                                 aria-hidden="true"></span>
@@ -50,12 +49,11 @@
 
                 <!-- <div class="text-center p-t-115">
                     <span class="txt1">
-                        Don’t have an account?
+                    Don’t have an account?
                     </span>
                 </div> -->
             </form>
         </div>
     </div>
 </div>
-
 <div id="dropDownSelect1"></div>

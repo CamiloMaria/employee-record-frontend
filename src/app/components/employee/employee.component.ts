@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee, EmployeeResponse } from 'src/app/models/employee';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { map } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-employee',
@@ -10,7 +11,7 @@ import { map } from 'rxjs/operators';
 })
 export class EmployeeComponent implements OnInit {
   employee: Employee[] = [];
-  page: number = 0;
+  page = 0;
   search: string = '';
 
   constructor(private employeeService: EmployeeService) {}
@@ -23,23 +24,22 @@ export class EmployeeComponent implements OnInit {
     this.employeeService
       .getEmployees()
       .pipe(
-        map((data: EmployeeResponse) => {
-          return data.map((item: Employee) => {
-            return {
-              completeName: item.completeName,
-              email: item.email,
-              extension: item.extension,
-              department: item.department,
-              officeCode: item.officeCode,
-            };
-          });
-        })
+        tap((data: EmployeeResponse) => {
+          this.employee = data.map(({ completeName, email, extension, department, officeCode }) => ({
+              completeName,
+              email,
+              extension,
+              department,
+              officeCode,
+          }));
+        }),
+      catchError((error) => {
+        console.log(error);
+        alert('Error al cargar los empleados');
+        return of([]);
+      })
       )
-      .subscribe({
-        next: (employees: Employee[]) => {
-          this.employee = employees;
-        },
-      });
+      .subscribe();
   }
 
   onSearchChange(searchValue: string) {
