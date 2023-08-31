@@ -94,20 +94,6 @@ export class AdminComponent implements OnInit {
       created_at: new Date(),
     };
 
-    // this.employeeForm = this.formBuilder.group({
-    //   name: ['', Validators.required],
-    //   lastName: ['', Validators.required],
-    //   email: ['', Validators.required],
-    //   extension: ['', Validators.required],
-    //   department: ['', Validators.required],
-    //   officeCode: ['', Validators.required],
-    // });
-
-    // this.adminForm = this.formBuilder.group({
-    //   username: ['', Validators.required],
-    //   password: ['', Validators.required],
-    //   role: ['', Validators.required],
-    // });
   }
   ngOnInit(): void {
     this.getAdminRole();

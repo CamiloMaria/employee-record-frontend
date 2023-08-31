@@ -24,8 +24,7 @@
                             style="cursor: pointer;">Admins</a></li>
                     <li class="nav-item"><a class="nav-link" [ngClass]="{
                         'active' : showEmployees === true,
-                    }" (click)="showAdmins = false; showEmployees = true"
-                            style="cursor: pointer;">Employees</a>
+                    }" (click)="showAdmins = false; showEmployees = true" style="cursor: pointer;">Employees</a>
                     </li>
                 </ul>
             </nav>
@@ -41,12 +40,11 @@
                             Employee</button>
                     </div>
 
-                    <h3>Employee</h3>
-
                     <div>
                         <form class="search-form">
                             <input class="search-input" #txtSearch type="text" placeholder="Search"
                                 (keyup)="onSearchChange(txtSearch.value)">
+                            <i class="bi bi-search"></i>
                         </form>
                         <button class="btn btn-primary" (click)="prevPage()" [disabled]="page === 0">
                             Anterior
@@ -208,12 +206,11 @@
                             Create Admin</button>
                     </div>
 
-                    <h3>Admins</h3>
-
                     <div>
                         <form class="search-form">
                             <input class="search-input" #txtSearch type="text" placeholder="Search"
                                 (keyup)="onSearchChange(txtSearch.value)">
+                            <i class="bi bi-search"></i>
                         </form>
                         <button class="btn btn-primary" (click)="prevPage()" [disabled]="page === 0">
                             Anterior
@@ -292,12 +289,14 @@
                         </div>
                     </div>
                     <!-- Modal Cambiar Contraseña -->
-                    <div class="modal fade" id="changePasswordModal" #changePasswordModal tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="changePasswordModal" #changePasswordModal tabindex="-1" role="dialog"
+                        aria-labelledby="changePasswordModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="changePasswordModalLabel">Cambiar Contraseña</h5>
-                                    <button type="button" class="close" (click)="closeChangePasswordModal()" aria-label="Close">
+                                    <button type="button" class="close" (click)="closeChangePasswordModal()"
+                                        aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
@@ -305,17 +304,21 @@
                                     <form>
                                         <div class="form-group">
                                             <label for="newPassword">Nueva Contraseña</label>
-                                            <input type="password" class="form-control" id="newPassword" [(ngModel)]="newPassword" name="newPassword">
+                                            <input type="password" class="form-control" id="newPassword"
+                                                [(ngModel)]="newPassword" name="newPassword">
                                         </div>
                                         <div class="form-group">
                                             <label for="confirmNewPassword">Confirmar Nueva Contraseña</label>
-                                            <input type="password" class="form-control" id="confirmNewPassword" [(ngModel)]="confirmNewPassword" name="confirmNewPassword">
+                                            <input type="password" class="form-control" id="confirmNewPassword"
+                                                [(ngModel)]="confirmNewPassword" name="confirmNewPassword">
                                         </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" (click)="changePassword()">Cambiar Contraseña</button>
-                                    <button type="button" class="btn btn-secondary" (click)="closeChangePasswordModal()">Cerrar</button>
+                                    <button type="button" class="btn btn-primary" (click)="changePassword()">Cambiar
+                                        Contraseña</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        (click)="closeChangePasswordModal()">Cerrar</button>
                                 </div>
                             </div>
                         </div>
@@ -381,7 +384,7 @@
             </div>
             <button id="logoutBtn" class="btn btn-danger" (click)="logout()">
                 <i class="bi bi-box-arrow-right "></i>
-                 Logout
+                Logout
             </button>
         </header>
         <main class="main">
@@ -401,6 +404,7 @@
                         <form class="search-form">
                             <input class="search-input" #txtSearch type="text" placeholder="Search"
                                 (keyup)="onSearchChange(txtSearch.value)">
+                            <i class="bi bi-search"></i>
                         </form>
                         <button class="btn btn-primary" (click)="prevPage()" [disabled]="page === 0">
                             Anterior
