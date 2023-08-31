@@ -17,6 +17,7 @@
                 <form class="search-form">
                     <input class="search-input" #txtSearch type="text" placeholder="Search"
                         (keyup)="onSearchChange(txtSearch.value)">
+                        <i class="bi bi-search"></i>
                 </form>
                 <button class="btn btn-primary" (click)="prevPage()"
                 [disabled]="page === 0">
