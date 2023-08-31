@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     if (this.loginForm.invalid || this.loading) {
-      return;
+      return alert("El usuario o contraseña son incorrectas");
     }
 
     const { username, password } = this.loginForm.value as LoginFormValue;
