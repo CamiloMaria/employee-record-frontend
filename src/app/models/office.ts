@@ -1,10 +1,10 @@
-export interface Office {
-    id: string;
-    pl: string;
-    nombre: string;
-    estatus: string;
-  }
+// export interface Office {
+//     id: string;
+//     pl: string;
+//     nombre: string;
+//     estatus: string;
+//   }
 
-export interface OfficeResponse {
-    value: Office[];
-}
+// export interface OfficeResponse {
+//     value: Office[];
+// }

@@ -10,8 +10,8 @@ import { Admin, AdminResponse } from 'src/app/models/admin';
 import { Employee, EmployeeResponse } from 'src/app/models/employee';
 import { AdminService } from 'src/app/services/admin.service';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { Office } from 'src/app/models/office';
-import { OfficeService } from 'src/app/services/office.service';
+// import { Office } from 'src/app/models/office';
+// import { OfficeService } from 'src/app/services/office.service';
 import { GetAdminRoleService } from 'src/app/services/getAdminRole.service';
 import * as bcrypt from 'bcryptjs';
 
@@ -27,7 +27,7 @@ export class AdminComponent implements OnInit {
   @ViewChild('editAdminModal') editAdminModalRef!: ElementRef;
   @ViewChild('changePasswordModal') changePasswordModalRef!: ElementRef;
 
-  offices: Office[] = [];
+  // offices: Office[] = [];
 
   selectedEmployee: Employee;
   selectedEmployeeEmpty: Employee;
@@ -56,7 +56,7 @@ export class AdminComponent implements OnInit {
     private getAdminRoleService: GetAdminRoleService,
     private adminService: AdminService,
     private employeeService: EmployeeService,
-    private officeService: OfficeService,
+    // private officeService: OfficeService,
     // private formBuilder: FormBuilder,
     private renderer: Renderer2
   ) {
@@ -111,30 +111,30 @@ export class AdminComponent implements OnInit {
       this.isAdmin = false;
       this.isSubAdmin = true;
     } else {
-      this.isAdmin = false;
+      this.isAdmin = true;
       this.isSubAdmin = false;
     }
   }
 
-  //Offices---
-  loadOffices() {
-    this.officeService.getOffices().subscribe({
-      next: (response: any) => {
-        const offices = response.rows.map((item: Office) => {
-          return {
-            id: item.id,
-            pl: item.pl,
-            nombre: item.nombre,
-            estatus: item.estatus,
-          };
-        });
-        this.offices = offices;
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-    });
-  }
+  // //Offices---
+  // loadOffices() {
+  //   this.officeService.getOffices().subscribe({
+  //     next: (response: any) => {
+  //       const offices = response.rows.map((item: Office) => {
+  //         return {
+  //           id: item.id,
+  //           pl: item.pl,
+  //           nombre: item.nombre,
+  //           estatus: item.estatus,
+  //         };
+  //       });
+  //       this.offices = offices;
+  //     },
+  //     error: (error: any) => {
+  //       console.log(error);
+  //     },
+  //   });
+  // }
 
   //Employees---
   loadEmployees() {
@@ -159,19 +159,19 @@ export class AdminComponent implements OnInit {
           this.employees = employees;
         },
       });
-    this.loadOffices();
+    // this.loadOffices();
   }
 
   createEmployee() {
-    const selectedOffice = this.offices.find(
-      (office) => office.pl === this.selectedEmployee.officeCode
-    );
+    // const selectedOffice = this.offices.find(
+    //   (office) => office.pl === this.selectedEmployee.officeCode
+    // );
 
-    if (selectedOffice) {
-      this.selectedEmployee.officeCode = selectedOffice.pl;
-    } else {
-      console.log('No se encontro la oficina');
-    }
+    // if (selectedOffice) {
+    //   this.selectedEmployee.officeCode = selectedOffice.pl;
+    // } else {
+    //   console.log('No se encontro la oficina');
+    // }
 
     this.employeeService.createEmployee(this.selectedEmployee).subscribe({
       next: () => {
