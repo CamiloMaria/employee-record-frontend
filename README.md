@@ -66,5 +66,5 @@ Antes de ejecutar la aplicación, asegúrate de tener instalado lo siguiente:
 
 ## Enlace hacia el repositorio del backend
 <p align="center">
-  <a href="https://github.com/CamiloMaria/employee-record-backend" target="blank">GitLab Backend Repository</a>
+  <a href="https://github.com/CamiloMaria/employee-record-backend" target="blank">Github Backend Repository</a>
 </p>
