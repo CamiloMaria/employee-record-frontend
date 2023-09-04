@@ -1,0 +1,56 @@
+<body>
+
+    <header class="header">
+        <div class="header__left">
+            <a href="/" class="header__logo-link">
+                <span class="visually-hidden">Plaza Lama</span>
+                <img class="header__logo-image"
+                    src="//plazalama.com.do/cdn/shop/files/BEA0A401-AA43-4843-B8ED-3389709E6C2F_220x@2x.png?v=1670945151"
+                    alt="Plaza Lama">
+            </a>
+            <h1 class="header__title">Employees Dashboard</h1>
+        </div>
+    </header>
+    <main class="main">
+        <div class="card">
+            <div>
+                <form class="search-form">
+                    <input class="search-input" #txtSearch type="text" placeholder="Search"
+                        (keyup)="onSearchChange(txtSearch.value)">
+                        <i class="bi bi-search"></i>
+                </form>
+                <button class="btn btn-primary" (click)="prevPage()"
+                [disabled]="page === 0">
+                    Anterior
+                </button>
+                &nbsp;
+                <button class="btn btn-primary" (click)="nextPage()"
+                    [disabled]="(employee | filtroEmployee:page+5).length === 0">
+                    Siguiente
+                </button>
+            </div>
+            &nbsp;
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre Completo</th>
+                        <th>Extension</th>
+                        <th>Correo</th>
+                        <th>Departamento</th>
+                        <th>Tienda</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of employee | filtroEmployee:page:search" [ngStyle]="{'width': '260px'}">
+                    <tr>
+                        <td>{{ item.completeName }}</td>
+                        <td>{{ item.extension }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.department }}</td>
+                        <td>{{ item.officeCode }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
