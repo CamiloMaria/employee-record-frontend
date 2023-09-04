@@ -1,27 +1,70 @@
-# ExtensionFinderFrontend
+# Employee Record Frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.4.
+<p align="center">
+  <a href="https://angular.io/" target="blank"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Angular_full_color_logo.svg" width="200" alt="Angular Logo" /></a>
+</p>
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Descripcion
 
-## Code scaffolding
+El **Employee Record Frontend** es una aplicación desarrollada en Angular que permite buscar empleados por diferentes criterios, gestionar administradores y realizar operaciones de creación, edición y eliminación de empleados y administradores, según los roles de usuario.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Características principales
 
-## Build
+- **Búsqueda de empleados**: Los usuarios pueden buscar empleados por su nombre completo, extensión, correo, tienda y departamento.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Autenticación de usuarios**: La aplicación cuenta con un sistema de autenticación que incluye dos roles: admin y subAdmin. Los administradores pueden realizar operaciones avanzadas, mientras que los subAdmins tienen un conjunto limitado de permisos.
 
-## Running unit tests
+- **Gestión de empleados**: Los administradores pueden crear, editar y eliminar empleados.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **Gestión de administradores**: El rol de Admin pueden crear, editar y eliminar otros administradores.
 
-## Running end-to-end tests
+- **Seguridad**: La aplicación utiliza bcryptjs para almacenar de forma segura las contraseñas de los administradores.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- **Interfaz de usuario atractiva**: Se utiliza Bootstrap Icons y Font Awesome para una interfaz de usuario moderna y amigable.
 
-## Further help
+- **Notificaciones**: Se incorpora ngx-toastr para mostrar notificaciones al usuario sobre las operaciones realizadas.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Requisitos
+
+Antes de ejecutar la aplicación, asegúrate de tener instalado lo siguiente:
+
+- Node.js y npm
+- Angular CLI
+- Dependencias del proyecto (puedes instalarlas ejecutando `npm install` en la raíz del proyecto)
+
+## Configuración
+
+1. Clona este repositorio en tu máquina local.
+2. Navega hasta la carpeta del proyecto con tu terminal.
+3. Ejecuta `npm install` para instalar todas las dependencias necesarias.
+4. Configura las variables de entorno en el archivo `src/environments/environment.ts` para apuntar al backend si es necesario.
+
+## Uso
+
+1. Ejecuta `ng serve` para iniciar el servidor de desarrollo. La aplicación estará disponible en `http://localhost:4200/`.
+
+2. Accede a la página de inicio de sesión y utiliza las credenciales de administrador para comenzar a utilizar la aplicación.
+
+3. Explora la aplicación, busca empleados y gestiona las operaciones disponibles según tu rol de usuario.
+
+## Roles de usuario
+
+- **Admin**: Tiene acceso completo para crear, editar y eliminar empleados y administradores.
+
+- **SubAdmin**: Puede crear, editar y eliminar empleados, pero no tiene permiso para gestionar administradores.
+
+## Bibliotecas Utilizadas
+
+- RxJS
+- Zone.js
+- tslib
+- Bootstrap Icons
+- ngx-toastr
+- bcryptjs
+- Font Awesome
+
+## Enlace hacia el repositorio del backend
+<p align="center">
+  <a href="https://gitlab.com/plaza-lama-developers/employee-record-backend/-/tree/develop?ref_type=heads" target="blank">GitLab Backend Repository</a>
+</p>
